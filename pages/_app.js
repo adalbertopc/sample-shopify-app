@@ -5,6 +5,13 @@ import { Provider as AppBridgeProvider } from '@shopify/app-bridge-react';
 import '@shopify/polaris/dist/styles.css';
 import translations from '@shopify/polaris/locales/en.json';
 import Cookies from 'js-cookie';
+import ApolloClient from 'apollo-boost';
+import { ApolloProvider } from 'react-apollo';
+
+const client = new ApolloClient({
+	fetchOptions: { credentials: 'include' },
+});
+
 export default class MyApp extends App {
 	render() {
 		const { Component, pageProps } = this.props;
@@ -21,7 +28,9 @@ export default class MyApp extends App {
 				</Head>
 				<AppBridgeProvider config={config}>
 					<AppProvider i18n={translations}>
-						<Component {...pageProps} />
+						<ApolloProvider client={client}>
+							<Component {...pageProps} />
+						</ApolloProvider>
 					</AppProvider>
 				</AppBridgeProvider>
 			</>
